@@ -10,9 +10,6 @@ app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///db.sqlite'
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-with app.app_context():
-    db.create_all()
-
 
 class Ingredient(db.Model):
     id = sa.Column(sa.Integer, primary_key=True)
@@ -21,6 +18,7 @@ class Ingredient(db.Model):
     fat = sa.Column(sa.Integer)
     carb = sa.Column(sa.Integer)
     calories = sa.Column(sa.Integer)
+    dishes = db.relationship("Dish", backref="ingredients")
 
 
 class Dish(db.Model):
@@ -29,6 +27,20 @@ class Dish(db.Model):
     weight_of_portion = sa.Column(sa.Integer, nullable=False)
     quantity = sa.Column(sa.Integer, nullable=False)
     description = sa.Column(sa.Text, nullable=False)
+    ingredients = db.relationship("Ingredient", secondary="dish_ingredient", backref="dishes")
+
+
+class DishIngredient(db.Model):
+    dish_id = sa.Column(sa.Integer, sa.ForeignKey("dish.id"), primary_key=True)
+    ingredient_id = sa.Column(sa.Integer, sa.ForeignKey("ingredient.id"), primary_key=True)
+
+
+with app.app_context():
+    db.create_all()
+
+
+from api import api
+app.register_blueprint(api)
 
 
 if __name__ == '__main__':

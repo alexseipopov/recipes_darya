@@ -1,7 +1,7 @@
 import sqlalchemy as sa
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
@@ -21,6 +21,12 @@ class Ingredient(db.Model):
     fat = sa.Column(sa.Integer)
     carb = sa.Column(sa.Integer)
     calories = sa.Column(sa.Integer)
+
+
+class Dish(db.Model):
+    id = sa.Column(sa.Integer, primary_key=True)
+    name = sa.Column(sa.Text, nullable=False, unique=True)
+    weight_of_portion = sa.Column(sa.Integer, nullable=False)
 
 
 if __name__ == '__main__':

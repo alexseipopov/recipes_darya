@@ -1,5 +1,5 @@
 import sqlalchemy as sa
-from flask import Flask, request
+from flask import Flask
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 
@@ -39,8 +39,8 @@ with app.app_context():
     db.create_all()
 
 
-from api import api
-app.register_blueprint(api)
+from api import api as a
+app.register_blueprint(a)
 
 
 if __name__ == '__main__':

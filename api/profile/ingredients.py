@@ -1,5 +1,6 @@
 from .. import api
-from main import Ingredient, request, db
+from ...main import db, Ingredient
+from flask import request
 
 # CRUD C-reate R-ead U-pdate D-elete
 
@@ -20,7 +21,7 @@ def get_all_ingredients():
                 "calories": item.calories
             } for item in ingredients]
         }
-    }
+    }, 200
 
 
 @api.post("/ingredients")
@@ -30,6 +31,12 @@ def new_ingredient():
     fat = request.json.get("fat")
     carb = request.json.get("carb")
     calories = request.json.get("calories")
+    if not name:
+        return {
+            "status": 1,
+            "description": "Fail",
+            "data": {}
+        }, 400
     item = Ingredient(name=name, protein=protein, fat=fat, carb=carb, calories=calories)
     db.session.add(item)
     db.session.commit()
@@ -37,7 +44,7 @@ def new_ingredient():
         "status": 0,
         "description": "OK",
         "data": {
-            "ingredients": {
+            "ingredient": {
                 "id": item.id,
                 "name": item.name,
                 "protein": item.protein,
@@ -46,12 +53,18 @@ def new_ingredient():
                 "calories": item.calories
             }
         }
-    }
+    }, 200
 
 
 @api.put("/ingredient/<int:id>")
 def update_ingredient(id):
     item = Ingredient.query.get(id)
+    if not item:
+        return {
+            "status": 2,
+            "description": "Fail",
+            "data": {}
+        }, 400
     name = request.json.get("name")
     protein = request.json.get("protein")
     fat = request.json.get("fat")
@@ -67,7 +80,7 @@ def update_ingredient(id):
         "status": 0,
         "description": "OK",
         "data": {
-            "ingredients": {
+            "ingredient": {
                 "id": item.id,
                 "name": item.name,
                 "protein": item.protein,
@@ -76,19 +89,25 @@ def update_ingredient(id):
                 "calories": item.calories
             }
         }
-    }
+    }, 200
 
 
 @api.delete("/ingredient/<int:id>")
 def delete_ingredient(id):
     item = Ingredient.query.get(id)
+    if not item:
+        return {
+            "status": 2,
+            "description": "Fail",
+            "data": {}
+        }, 400
     db.session.delete(item)
     db.session.commit()
     return {
         "status": 0,
         "description": "OK",
         "data": {
-            "ingredients": {
+            "ingredient": {
                 "id": item.id,
                 "name": item.name,
                 "protein": item.protein,
@@ -97,5 +116,4 @@ def delete_ingredient(id):
                 "calories": item.calories
             }
         }
-    }
-
+    }, 200

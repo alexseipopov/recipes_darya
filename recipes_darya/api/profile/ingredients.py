@@ -1,6 +1,8 @@
-from .. import api
-from ...main import db, Ingredient
 from flask import request
+
+from .. import api
+from recipes_darya import db
+from recipes_darya.modal.model import Ingredient
 
 # CRUD C-reate R-ead U-pdate D-elete
 

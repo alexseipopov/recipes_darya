@@ -1,6 +1,8 @@
-from .. import api
-from ...main import db, Dish
 from flask import request
+
+from .. import api
+from recipes_darya import db
+from recipes_darya.modal.model import Dish
 
 
 @api.get("/dishes")

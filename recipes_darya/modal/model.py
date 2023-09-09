@@ -16,7 +16,6 @@ class Ingredient(db.Model):
 class Dish(db.Model):
     id = sa.Column(sa.Integer, primary_key=True)
     name = sa.Column(sa.Text, nullable=False, unique=True)
-    weight_of_portion = sa.Column(sa.Integer, nullable=False)
     quantity = sa.Column(sa.Integer, nullable=False)
     description = sa.Column(sa.Text, nullable=False)
     ingredients = db.relationship("Ingredient", secondary="dish_ingredient", backref="dishes")

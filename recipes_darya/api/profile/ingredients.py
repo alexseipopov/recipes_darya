@@ -27,7 +27,7 @@ def get_all_ingredients():
 
 
 @api.post("/ingredients")
-def new_ingredient():
+def new_ingredients():
     name = request.json.get("name")
     protein = request.json.get("protein")
     fat = request.json.get("fat")
@@ -46,7 +46,7 @@ def new_ingredient():
         "status": 0,
         "description": "OK",
         "data": {
-            "ingredient": {
+            "ingredients": {
                 "id": item.id,
                 "name": item.name,
                 "protein": item.protein,
@@ -59,7 +59,7 @@ def new_ingredient():
 
 
 @api.put("/ingredient/<int:id>")
-def update_ingredient(id):
+def update_ingredients(id):
     item = Ingredient.query.get(id)
     if not item:
         return {
@@ -82,7 +82,7 @@ def update_ingredient(id):
         "status": 0,
         "description": "OK",
         "data": {
-            "ingredient": {
+            "ingredients": {
                 "id": item.id,
                 "name": item.name,
                 "protein": item.protein,
@@ -95,7 +95,7 @@ def update_ingredient(id):
 
 
 @api.delete("/ingredient/<int:id>")
-def delete_ingredient(id):
+def delete_ingredients(id):
     item = Ingredient.query.get(id)
     if not item:
         return {
@@ -109,7 +109,7 @@ def delete_ingredient(id):
         "status": 0,
         "description": "OK",
         "data": {
-            "ingredient": {
+            "ingredients": {
                 "id": item.id,
                 "name": item.name,
                 "protein": item.protein,

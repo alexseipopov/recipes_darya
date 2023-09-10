@@ -12,3 +12,5 @@ migrate = Migrate(app, db)
 
 from recipes_darya.api import api as a
 app.register_blueprint(a)
+
+from recipes_darya.admin import admin

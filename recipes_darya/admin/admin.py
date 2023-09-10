@@ -1,11 +1,7 @@
-from flask_admin import Admin
+from recipes_darya.admin import admin
 from flask_admin.contrib.sqla import ModelView
-
-from recipes_darya import app
-from ..modal.model import Ingredient, Dish
+from recipes_darya.modal.model import Ingredient, Dish
 from recipes_darya import db
-
-admin = Admin(app)
 
 
 class RecipesIndexView(ModelView):

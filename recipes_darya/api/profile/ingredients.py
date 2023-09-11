@@ -1,8 +1,9 @@
 from flask import request
 
-from .. import api
 from recipes_darya import db
 from recipes_darya.modal.model import Ingredient
+
+from .. import api
 
 # CRUD C-reate R-ead U-pdate D-elete
 
@@ -39,6 +40,7 @@ def new_ingredients():
             "description": "Fail",
             "data": {}
         }, 400
+    # TODO check if name is unique
     item = Ingredient(name=name, protein=protein, fat=fat, carb=carb, calories=calories)
     db.session.add(item)
     db.session.commit()

@@ -34,6 +34,13 @@ def new_dishes():
             "description": "Fail",
             "data": {}
         }, 400
+    check_name = Dish.query.filter_by(name=name).first()
+    if check_name:
+        return {
+            "status": 1,
+            "description": "Name already exist",
+            "data": {}
+        }, 400
     item = Dish(name=name, quantity=quantity, description=description)
     db.session.add(item)
     db.session.commit()

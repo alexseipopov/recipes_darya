@@ -40,7 +40,13 @@ def new_ingredients():
             "description": "Fail",
             "data": {}
         }, 400
-    # TODO check if name is unique
+    check_name = Ingredient.query.filter_by(name=name).first()
+    if check_name:
+        return {
+            "status": 1,
+            "description": "Name already exist",
+            "data": {}
+        }, 400
     item = Ingredient(name=name, protein=protein, fat=fat, carb=carb, calories=calories)
     db.session.add(item)
     db.session.commit()

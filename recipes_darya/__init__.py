@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
+from flasgger import Swagger
 
 app = Flask(__name__)
 
@@ -9,6 +10,7 @@ app.config["SECRET_KEY"] = "secret key"
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
+Swagger(app)
 
 from recipes_darya.api import api as a
 

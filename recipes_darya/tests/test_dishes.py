@@ -1,6 +1,8 @@
 import pytest
-from recipes_darya import app
 import requests
+
+from recipes_darya import app, db
+from recipes_darya.modal.model import Dish
 
 
 def test_ok():
@@ -24,6 +26,21 @@ def client():
         yield client
 
 
+@pytest.fixture(scope="session")
+def preset():
+    app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///db_test.sqlite'
+    # with app.app_context():
+    #     db.drop_all()
+    #     db.create_all()
+
+
+@pytest.fixture(scope="session", autouse=True)
+def empty_db():
+    with app.app_context():
+        db.drop_all()
+        db.create_all()
+
+
 def test_app(client):
     response = client.get("/api/dishes")
     data = response.get_json()
@@ -37,3 +54,60 @@ def test_app_2(client):
     # assert type(data) == dict
     assert response.status_code == 404
 
+
+# @pytest.mark.usefixtures(client)
+# def test_create_dishes_ok(client, empty_db):
+#     response = client.post("/api/dishes", json={
+#         "name": "testing",
+#         "quantity": 15,
+#         "description": "some desc"
+#     })
+#
+#     dish = Dish.query.filter_by(name="testing").first()
+#     dish_count = Dish.query.all()
+#
+#     assert response.status_code == 200
+#     assert dish is not None
+#     assert len(dish_count) == 1
+
+
+@pytest.mark.parametrize("input_value, expected_value", [
+    ({
+         "name": "testing",
+         "description": "some desc"
+     }, {
+         "status": 400,
+         "condition_with_none": True,
+         "len": 0
+     }),
+
+    ({
+         "name": "testing",
+         "quantity": 15,
+         "description": "some desc"
+     }, {
+         "status": 200,
+         "condition_with_none": False,
+         "len": 1
+     }),
+
+    ({
+         "name": "testing",
+         "quantity": 15,
+         "description": "some desc"
+     }, {
+         "status": 400,
+         "condition_with_none": False,
+         "len": 1
+     })
+])
+def test_create_dishes_fail_not_full_data(client, input_value, expected_value):
+    response = client.post("/api/dishes", json=input_value)
+
+    dish = Dish.query.filter_by(name="testing").first()
+    dish_count = Dish.query.all()
+
+    assert (dish is None) == expected_value["condition_with_none"]
+    assert len(dish_count) == expected_value["len"]
+
+    assert response.status_code == expected_value["status"]

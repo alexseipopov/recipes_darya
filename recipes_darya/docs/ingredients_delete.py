@@ -1,7 +1,7 @@
-dishes_put = {
-    "tags": ["Dishes"],
-    "summary": "Update of dishes by ID",
-    "description": "Update of dishes by ID",
+ingredients_delete = {
+    "tags": "Ingredients",
+    "summary": "Delete ingredients",
+    "description": "Delete ingredients",
     "parameters": [
         {
             "name": "data",
@@ -12,11 +12,17 @@ dishes_put = {
                     "name": {
                         "type": "string"
                     },
-                    "quantity": {
+                    "protein": {
                         "type": "integer"
                     },
-                    "description": {
-                        "type": "string"
+                    "fat": {
+                        "type": "integer"
+                    },
+                    "carb": {
+                        "type": "integer"
+                    },
+                    "calories": {
+                        "type": "integer"
                     }
                 }
             }
@@ -36,29 +42,7 @@ dishes_put = {
                         "type": "string",
                         "enum": ["OK"]
                     },
-                    "data": {
-                        "type": "object",
-                        "properties": {
-                            "dishes": {
-                                "id": {
-                                    "type": "integer",
-                                    "example": 1
-                                },
-                                "name": {
-                                    "type": "string",
-                                    "example": "name"
-                                },
-                                "quantity": {
-                                    "type": "integer",
-                                    "example": 1
-                                },
-                                "description": {
-                                    "type": "string",
-                                    "example": "description"
-                                }
-                            }
-                        }
-                    }
+                    "data": {}
                 }
             }
         },
@@ -75,10 +59,7 @@ dishes_put = {
                         "type": "string",
                         "enum": ["Fail"]
                     },
-                    "data": {
-                        "type": "object",
-                        "properties": {}
-                    }
+                    "data": {}
                 }
             }
         }

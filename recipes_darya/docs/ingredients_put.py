@@ -1,8 +1,8 @@
-dishes_put = {
-    "tags": ["Dishes"],
-    "summary": "Update of dishes by ID",
-    "description": "Update of dishes by ID",
-    "parameters": [
+ingredients_put = {
+    "tags": "Ingredients",
+    "summery": "Update ingredients",
+    "description": "Update description",
+    "parametres": [
         {
             "name": "data",
             "in": "body",
@@ -12,11 +12,17 @@ dishes_put = {
                     "name": {
                         "type": "string"
                     },
-                    "quantity": {
+                    "protein": {
                         "type": "integer"
                     },
-                    "description": {
-                        "type": "string"
+                    "fat": {
+                        "type": "integer"
+                    },
+                    "carb": {
+                        "type": "integer"
+                    },
+                    "calories": {
+                        "type": "integer"
                     }
                 }
             }
@@ -39,7 +45,7 @@ dishes_put = {
                     "data": {
                         "type": "object",
                         "properties": {
-                            "dishes": {
+                            "ingredients": {
                                 "id": {
                                     "type": "integer",
                                     "example": 1
@@ -48,13 +54,21 @@ dishes_put = {
                                     "type": "string",
                                     "example": "name"
                                 },
-                                "quantity": {
+                                "protein": {
                                     "type": "integer",
-                                    "example": 1
+                                    "example": 2
                                 },
-                                "description": {
-                                    "type": "string",
-                                    "example": "description"
+                                "fat": {
+                                    "type": "integer",
+                                    "example": 3
+                                },
+                                "carb": {
+                                    "type": "integer",
+                                    "example": 4
+                                },
+                                "calories": {
+                                    "type": "integer",
+                                    "example": 5
                                 }
                             }
                         }

@@ -1,14 +1,17 @@
 from flask import request
+from flasgger import swag_from
 
 from recipes_darya import db
 from recipes_darya.modal.model import Ingredient
 
 from .. import api
+from recipes_darya.docs import ingredients_get, ingredients_post, ingredients_put, ingredients_delete
 
 # CRUD C-reate R-ead U-pdate D-elete
 
 
 @api.get("/ingredients")
+@swag_from(ingredients_get)
 def get_all_ingredients():
     ingredients = Ingredient.query.all()
     return {
@@ -28,6 +31,7 @@ def get_all_ingredients():
 
 
 @api.post("/ingredients")
+@swag_from(ingredients_post)
 def new_ingredients():
     name = request.json.get("name")
     protein = request.json.get("protein")
@@ -67,6 +71,7 @@ def new_ingredients():
 
 
 @api.put("/ingredient/<int:id>")
+@swag_from(ingredients_put)
 def update_ingredients(id):
     item = Ingredient.query.get(id)
     if not item:
@@ -103,6 +108,7 @@ def update_ingredients(id):
 
 
 @api.delete("/ingredient/<int:id>")
+@swag_from(ingredients_delete)
 def delete_ingredients(id):
     item = Ingredient.query.get(id)
     if not item:

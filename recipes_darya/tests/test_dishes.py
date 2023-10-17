@@ -128,9 +128,16 @@ def test_delete_dishes(client):
     })
 
     dish = Dish.query.filter_by(name="testing").first()
+    assert response.json["status"] == 0
     assert response.status_code == 200
     assert dish is not None
 
-    response = client.delete("/api/dishes", name="testing")
+    response = client.delete(f"/api/dishes/{response.json['data']['dishes']['id']}")
     dish_count = Dish.query.all()
     assert len(dish_count) == 0
+
+    response = client.delete("/api/dishes/25")
+    # respData = response.json
+    assert response.json["status"] == 2
+    assert response.status_code == 400
+

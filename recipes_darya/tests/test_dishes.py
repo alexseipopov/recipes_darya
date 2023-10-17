@@ -3,22 +3,7 @@ import requests
 
 from recipes_darya import app, db
 from recipes_darya.modal.model import Dish
-
-
-def test_ok():
-    a = 10
-    assert a == 10, "Not equal"
-
-
-def test_fail():
-    a = 5
-    assert a != 10, "Not equal"
-
-
-def test_url_ok():
-    response = requests.get("https://google.com")
-    assert response.status_code == 200, "FAIL"
-
+ 
 
 @pytest.fixture()
 def client():
@@ -77,29 +62,51 @@ def test_app_2(client):
          "description": "some desc"
      }, {
          "status": 400,
-         "condition_with_none": True,
+         "compare_with_none": True,
          "len": 0
      }),
 
     ({
          "name": "testing",
-         "quantity": 15,
-         "description": "some desc"
+         "quantity": 15
      }, {
-         "status": 200,
-         "condition_with_none": False,
-         "len": 1
+         "status": 400,
+         "compare_with_none": True,
+         "len": 0
      }),
 
     ({
-         "name": "testing",
-         "quantity": 15,
-         "description": "some desc"
+         "name": "testing"
      }, {
          "status": 400,
-         "condition_with_none": False,
-         "len": 1
-     })
+         "compare_with_none": True,
+         "len": 0
+     }),
+
+    ({
+        "quantity": 15
+    }, {
+        "status": 400,
+        "compare_with_none": True,
+        "len": 0
+    }),
+
+    ({
+        "quantity": 15,
+        "description": "some desc"
+    }, {
+        "status": 400,
+        "compare_with_none": True,
+        "len": 0
+    }),
+
+    ({
+        "description": "some desc"
+    }, {
+        "status": 400,
+        "compare_with_none": True,
+        "len": 0
+    })
 ])
 def test_create_dishes_fail_not_full_data(client, input_value, expected_value):
     response = client.post("/api/dishes", json=input_value)
@@ -107,7 +114,23 @@ def test_create_dishes_fail_not_full_data(client, input_value, expected_value):
     dish = Dish.query.filter_by(name="testing").first()
     dish_count = Dish.query.all()
 
-    assert (dish is None) == expected_value["condition_with_none"]
+    assert (dish is None) == expected_value["compare_with_none"]
     assert len(dish_count) == expected_value["len"]
 
     assert response.status_code == expected_value["status"]
+
+
+def test_delete_dishes(client):
+    response = client.post("/api/dishes", json={
+        "name": "testing",
+        "quantity": 15,
+        "description": "some desc"
+    })
+
+    dish = Dish.query.filter_by(name="testing").first()
+    assert response.status_code == 200
+    assert dish is not None
+
+    response = client.delete("/api/dishes", name="testing")
+    dish_count = Dish.query.all()
+    assert len(dish_count) == 0

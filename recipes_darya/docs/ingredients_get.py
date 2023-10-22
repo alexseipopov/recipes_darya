@@ -1,7 +1,7 @@
-dishes_get = {
-    "tags": ["Dishes"],
-    "summary": "Get all dishes (summary)",
-    "description": "Get all dishes (description)",
+ingredients_get = {
+    "tags": ["Ingredients"],
+    "summary": "Get all ingredients",
+    "description": "Get all ingredients",
     "responses": {
         "200": {
             "description": "OK",
@@ -19,7 +19,7 @@ dishes_get = {
                     "data": {
                         "type": "object",
                         "properties": {
-                            "dishes": {
+                            "ingredient": {
                                 "type": "array",
                                 "items": {
                                     "type": "object",
@@ -32,13 +32,21 @@ dishes_get = {
                                             "type": "string",
                                             "example": "name"
                                         },
-                                        "quantity": {
+                                        "protein": {
                                             "type": "integer",
-                                            "example": 1
+                                            "example": 2
                                         },
-                                        "description": {
-                                            "type": "string",
-                                            "example": "description"
+                                        "fat": {
+                                            "type": "integer",
+                                            "example": 3
+                                        },
+                                        "carb": {
+                                            "type": "integer",
+                                            "example": 4
+                                        },
+                                        "calories": {
+                                            "type": "integer",
+                                            "example": 5
                                         }
                                     }
                                 }

@@ -5,7 +5,7 @@ from recipes_darya import db
 from recipes_darya.modal.model import Dish
 
 from .. import api
-from recipes_darya.docs import dishes_get
+from recipes_darya.docs import dishes_get, dishes_post, dishes_put, dishes_delete
 
 
 @api.get("/dishes")
@@ -27,95 +27,7 @@ def get_all_dishes():
 
 
 @api.post("/dishes")
-@swag_from({
-    "tags": ["Dishes"],
-    "summary": "Create new dish",
-    "description": "Create new dish",
-    "parameters": [
-        {
-            "name": "data",
-            "in": "body",
-            "schema": {
-                "type": "object",
-                "properties": {
-                    "name": {
-                        "type": "string"
-                    },
-                    "quantity": {
-                        "type": "integer"
-                    },
-                    "description": {
-                        "type": "string"
-                    }
-                }
-            }
-        }
-    ],
-    "responses": {
-        "200": {
-            "description": "OK",
-            "schema": {
-                "type": "object",
-                "properties": {
-                    "status": {
-                        "type": "integer",
-                        "enum": [0]
-                    },
-                    "description": {
-                        "type": "string",
-                        "enum": ["OK"]
-                    },
-                    "data": {
-                        "type": "object",
-                        "properties": {
-                            "dishes": {
-                                "type": "object",
-                                "properties": {
-                                    "id": {
-                                        "type": "integer",
-                                        "example": 1
-                                    },
-                                    "name": {
-                                        "type": "string",
-                                        "example": "name"
-                                    },
-                                    "quantity": {
-                                        "type": "integer",
-                                        "example": 1
-                                    },
-                                    "description": {
-                                        "type": "string",
-                                        "example": "description"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "400": {
-            "description": "Fail description",
-            "schema": {
-                "type": "object",
-                "properties": {
-                    "status": {
-                        "type": "integer",
-                        "enum": [1]
-                    },
-                    "description": {
-                        "type": "string",
-                        "enum": ["Fail", "Name already exist"]
-                    },
-                    "data": {
-                        "type": "object",
-                        "properties": {}
-                    }
-                }
-            }
-        }
-    }
-})
+@swag_from(dishes_post)
 def new_dishes():
     name = request.json.get("name")
     quantity = request.json.get("quantity")
@@ -151,6 +63,7 @@ def new_dishes():
 
 
 @api.put("/dishes/<int:id>")
+@swag_from(dishes_put)
 def update_dishes(id):
     item = Dish.query.get(id)
     if not item:
@@ -181,6 +94,7 @@ def update_dishes(id):
 
 
 @api.delete("/dishes/<int:id>")
+@swag_from(dishes_delete)
 def delete_dishes(id):
     item = Dish.query.get(id)
     if not item:

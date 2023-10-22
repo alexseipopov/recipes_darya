@@ -1,12 +1,15 @@
 from flask import request
+from flasgger import swag_from
 
 from recipes_darya import db
 from recipes_darya.modal.model import Dish
 
 from .. import api
+from recipes_darya.docs import dishes_get, dishes_post, dishes_put, dishes_delete
 
 
 @api.get("/dishes")
+@swag_from(dishes_get)
 def get_all_dishes():
     dishes = Dish.query.all()
     return {
@@ -24,6 +27,7 @@ def get_all_dishes():
 
 
 @api.post("/dishes")
+@swag_from(dishes_post)
 def new_dishes():
     name = request.json.get("name")
     quantity = request.json.get("quantity")
@@ -59,6 +63,7 @@ def new_dishes():
 
 
 @api.put("/dishes/<int:id>")
+@swag_from(dishes_put)
 def update_dishes(id):
     item = Dish.query.get(id)
     if not item:
@@ -89,6 +94,7 @@ def update_dishes(id):
 
 
 @api.delete("/dishes/<int:id>")
+@swag_from(dishes_delete)
 def delete_dishes(id):
     item = Dish.query.get(id)
     if not item:

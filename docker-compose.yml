@@ -1,0 +1,19 @@
+version: "3.8"
+
+services:
+  recipes_api:
+    build: .
+    container_name: recipes_container_compose
+    ports:
+      - "5005:5005"
+    depends_on:
+      - recipes_db
+  recipes_db:
+    image: postgres:latest
+    ports:
+      - "5430:5432"
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=recipes
+      - POSTGRES_USER=postgres
+

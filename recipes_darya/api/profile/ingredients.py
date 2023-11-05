@@ -66,7 +66,7 @@ def new_ingredients():
     }, 200
 
 
-@api.put("/ingredient/<int:id>")
+@api.put("/ingredients/<int:id>")
 def update_ingredients(id):
     item = Ingredient.query.get(id)
     if not item:
@@ -102,7 +102,7 @@ def update_ingredients(id):
     }, 200
 
 
-@api.delete("/ingredient/<int:id>")
+@api.delete("/ingredients/<int:id>")
 def delete_ingredients(id):
     item = Ingredient.query.get(id)
     if not item:

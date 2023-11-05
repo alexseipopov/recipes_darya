@@ -95,6 +95,7 @@ def test_delete_ingredients(client):
     assert response.json["description"] == "Fail"
     assert response.status_code == 400
 
+
 def test_update_ingredients(client):
     response = client.post("/api/ingredients", json={
         "name": "test3",

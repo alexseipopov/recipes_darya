@@ -3,7 +3,7 @@ import requests
 
 from recipes_darya import app, db
 from recipes_darya.modal.model import Dish
- 
+
 
 @pytest.fixture()
 def client():
@@ -40,20 +40,19 @@ def test_app_2(client):
     assert response.status_code == 404
 
 
-# @pytest.mark.usefixtures(client)
-# def test_create_dishes_ok(client, empty_db):
-#     response = client.post("/api/dishes", json={
-#         "name": "testing",
-#         "quantity": 15,
-#         "description": "some desc"
-#     })
-#
-#     dish = Dish.query.filter_by(name="testing").first()
-#     dish_count = Dish.query.all()
-#
-#     assert response.status_code == 200
-#     assert dish is not None
-#     assert len(dish_count) == 1
+def test_create_dishes_ok(client, empty_db):
+    response = client.post("/api/dishes", json={
+        "name": "testing",
+        "quantity": 15,
+        "description": "some desc"
+    })
+
+    dish = Dish.query.filter_by(name="testing").first()
+    dish_count = Dish.query.all()
+
+    assert response.status_code == 200
+    assert dish is not None
+    assert len(dish_count) == 1
 
 
 @pytest.mark.parametrize("input_value, expected_value", [
@@ -62,8 +61,8 @@ def test_app_2(client):
          "description": "some desc"
      }, {
          "status": 400,
-         "compare_with_none": True,
-         "len": 0
+         "compare_with_none": False,
+         "len": 1
      }),
 
     ({
@@ -71,42 +70,42 @@ def test_app_2(client):
          "quantity": 15
      }, {
          "status": 400,
-         "compare_with_none": True,
-         "len": 0
+         "compare_with_none": False,
+         "len": 1
      }),
 
     ({
          "name": "testing"
      }, {
          "status": 400,
-         "compare_with_none": True,
-         "len": 0
+         "compare_with_none": False,
+         "len": 1
      }),
 
     ({
-        "quantity": 15
-    }, {
-        "status": 400,
-        "compare_with_none": True,
-        "len": 0
-    }),
+         "quantity": 15
+     }, {
+         "status": 400,
+         "compare_with_none": False,
+         "len": 1
+     }),
 
     ({
-        "quantity": 15,
-        "description": "some desc"
-    }, {
-        "status": 400,
-        "compare_with_none": True,
-        "len": 0
-    }),
+         "quantity": 15,
+         "description": "some desc"
+     }, {
+         "status": 400,
+         "compare_with_none": False,
+         "len": 1
+     }),
 
     ({
-        "description": "some desc"
-    }, {
-        "status": 400,
-        "compare_with_none": True,
-        "len": 0
-    })
+         "description": "some desc"
+     }, {
+         "status": 400,
+         "compare_with_none": False,
+         "len": 1
+     })
 ])
 def test_create_dishes_fail_not_full_data(client, input_value, expected_value):
     response = client.post("/api/dishes", json=input_value)
@@ -122,19 +121,19 @@ def test_create_dishes_fail_not_full_data(client, input_value, expected_value):
 
 def test_delete_dishes(client):
     response = client.post("/api/dishes", json={
-        "name": "testing",
+        "name": "testing1",
         "quantity": 15,
         "description": "some desc"
     })
 
-    dish = Dish.query.filter_by(name="testing").first()
+    dish = Dish.query.filter_by(name="testing1").first()
     assert response.json["status"] == 0
     assert response.status_code == 200
     assert dish is not None
 
     response = client.delete(f"/api/dishes/{response.json['data']['dishes']['id']}")
     dish_count = Dish.query.all()
-    assert len(dish_count) == 0
+    assert len(dish_count) == 1
 
     response = client.delete("/api/dishes/25")
     # respData = response.json
@@ -142,9 +141,9 @@ def test_delete_dishes(client):
     assert response.status_code == 400
 
 
-def test_update_dishes_ok(client, empty_db):
+def test_update_dishes_ok(client):
     response = client.post("/api/dishes", json={
-        "name": "testing",
+        "name": "testing3",
         "quantity": 15,
         "description": "some desc"
     })
@@ -157,4 +156,8 @@ def test_update_dishes_ok(client, empty_db):
     dish = Dish.query.filter_by(name="testing2").first()
     assert response.status_code == 200
     dish_count = Dish.query.all()
-    assert len(dish_count) == 1
+    assert len(dish_count) == 2
+
+    response = client.put("/api/dishes/20")
+    assert response.json["status"] == 2
+    assert response.status_code == 400

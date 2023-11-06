@@ -16,4 +16,8 @@ services:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=recipes
       - POSTGRES_USER=postgres
+    volumes:
+      - recipes_darya_db_volume:/var/lib/postgresql/data
 
+volumes:
+    recipes_darya_db_volume:

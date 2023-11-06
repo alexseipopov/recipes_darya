@@ -5,7 +5,7 @@ from flasgger import Swagger
 
 app = Flask(__name__)
 
-app.config["SQLALCHEMY_DATABASE_URI"] = 'postgresql+psycopg2://postgres:postgres@recipes_db:5430/recipes'
+app.config["SQLALCHEMY_DATABASE_URI"] = 'postgresql+psycopg2://postgres:postgres@recipes_db:5432/recipes'
 app.config["SECRET_KEY"] = "secret key"
 
 db = SQLAlchemy(app)

@@ -70,7 +70,7 @@ def new_ingredients():
     }, 200
 
 
-@api.put("/ingredient/<int:id>")
+@api.put("/ingredients/<int:id>")
 @swag_from(ingredients_put)
 def update_ingredients(id):
     item = Ingredient.query.get(id)
@@ -107,7 +107,7 @@ def update_ingredients(id):
     }, 200
 
 
-@api.delete("/ingredient/<int:id>")
+@api.delete("/ingredients/<int:id>")
 @swag_from(ingredients_delete)
 def delete_ingredients(id):
     item = Ingredient.query.get(id)
